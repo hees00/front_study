@@ -1,6 +1,15 @@
 const cal = require("./dialogcal.js");
 const readline = require("readline");
 
+
+
+// const caltest= new cal.calculateDia()
+
+// caltest.caculate(line)
+// test('test', () => {
+//     expect( caltest.caculate(1+(3-1)*2)).toBe(5);
+// });
+
 let ip = "";
 
 const rl = readline.createInterface({

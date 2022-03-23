@@ -14,7 +14,6 @@ class calculateDia{
         }
         this.changeback(cal);
         this.stackA= this.deletenull(this.stackA)
-        // console.log("공백 없애버리기"+this.stackA)
 
         while(this.stackA.length != 1){
             for(let i in this.stackA){
@@ -75,9 +74,9 @@ class calculateDia{
     }
 
     changeback(cal){
-        let calArray=Array.from(cal)
+        const calArray=Array.from(cal)
         let num="";
-        // console.log(calArray)
+
         calArray.forEach(  
             i=>{
                 if( '0'<= i && i <= '9' ){
@@ -92,57 +91,51 @@ class calculateDia{
                             break;
 
                         case '+' : case '-' : case '*' : case '/' :
-                            while(true){
-                                if(this.stackB[this.stackB.length-1] == null){
-                                    this.stackB.push(i)
-                                    break
-                                }
-            
-                                if(this.checkCorrect(i) <= this.checkCorrect(this.stackB[this.stackB.length-1])){
-                                    this.stackB.push(i)
-                                    break
-                                }
-                                if(this.stackB[this.stackB.length-1] == '('){
-                                    this.stackB.push(i)
-                                    break
-                                }
-                                this.stackA.push(this.stackB.pop())
-                            }
-
+                            this.pushStackB();
                             break;
                         
                         case ')':
-                            while(true){
-                                if(this.stackB[this.stackB.length-1] == '(' || this.stackB[this.stackB.length-1] == null ){
-                                    this.stackB.pop()
-                                    break
-                                }
-                                else{
-                                    this.stackA.push(this.stackB.pop())
-                                }
-                            }
+                            this.pushtoopen();
                     }
                 }
             }
         );
         this.stackA.push(num);
 
-        for(let i in this.stackB){
-            this.stackA.push(this.stackB[this.stackB.length-i])
-        }
-        // this.stackB.forEach(
-        //     i => {
-        //         // let p = this.stackB.pop()
-        //         this.stackA.push(i)
-        //     }
-        // )
-        //왜지
-        this.stackA.push(this.stackB[0])
+        this.stackA=[...this.stackA,...this.stackB]
     }   
-}
 
-// const test = new calculateDia()
-// test.caculate("6/2+3+3+3*5")
+    pushStackB(){
+        while(true){
+            if(this.stackB[this.stackB.length-1] == null){
+                this.stackB.push(i)
+                break
+            }
+
+            if(this.checkCorrect(i) <= this.checkCorrect(this.stackB[this.stackB.length-1])){
+                this.stackB.push(i)
+                break
+            }
+            if(this.stackB[this.stackB.length-1] == '('){
+                this.stackB.push(i)
+                break
+            }
+            this.stackA.push(this.stackB.pop())
+        }
+    }
+
+    pushtoopen(){
+        while(true){
+            if(this.stackB[this.stackB.length-1] == '(' || this.stackB[this.stackB.length-1] == null ){
+                this.stackB.pop()
+                break
+            }
+            else{
+                this.stackA.push(this.stackB.pop())
+            }
+        }
+    }
+}
 
 //모듈 내보내기
 exports.calculateDia = calculateDia
