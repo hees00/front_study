@@ -93,12 +93,16 @@ function getPos(pos) {
     return [(8 - pos[1]), x]
 }
 
-function move(from, to) {
+function move(from, to, turn) {
     const posFrom = getPos(from)
     const posTo = getPos(to)
     const pi = board[posFrom[0]][posFrom[1]]
     if (pi == 0) {
         console.log("해당 위치에 말이 존재하지 않습니다")
+        return
+    }
+    else if(pi.color !== turn){
+        console.log("순서대로 해!")
         return
     }
     if (pi.moverule(to)) {
@@ -125,6 +129,11 @@ function checkIfMovabale(pos, posfrom) {
 }
 
 
+class User{
+    constructor(color) {
+        color = color
+    }
+}
 
 class Piece {
     constructor(color, position, pieceNumber) {
@@ -329,6 +338,7 @@ function startGame() {
 exports.showBoard=showBoard;
 exports.move=move;
 exports.startGame=startGame;
+exports.User =User;
 
 
 

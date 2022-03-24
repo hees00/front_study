@@ -8,17 +8,19 @@ const rl = readline.createInterface({
 
 
 chess.startGame();
+let color = 1
 
 rl.on("line",(line)=>{
     if(line == 'end'){
         rl.close();
     }
-    else if(line == 'show'){
+    else if(line == 'board'){
         chess.showBoard();
     }
     else{
         let po = splitInput(line);
-        chess.move(po[0],po[1]);
+        chess.move(po[0],po[1],color);
+        color = color? 0:1;
     }
 });
     
