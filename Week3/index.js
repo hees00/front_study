@@ -18,8 +18,8 @@ rl.on("line",(line)=>{
         chess.showBoard();
     }
     else{
-        let po = splitInput(line);
-        chess.move(po[0],po[1],color);
+        let inputLine = splitInput(line);
+        chess.move(inputLine[0],inputLine[1],color);
         color = color? 0:1;
     }
 });
@@ -28,6 +28,4 @@ rl.on('close',()=>{
     process.exit();
 });
 
-function splitInput(ip){
-    return ip.split(" ")
-}
+const splitInput = (ip) => ip.split(" ");

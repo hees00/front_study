@@ -1,62 +1,40 @@
-const board = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
-const readline = require("readline");
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
-
-
-// function playing() {
-//     startGame();
-
-//     rl.on("line",(line)=>{
-//         if(line == 'end'){
-//             rl.close();
-//         }
-//         else if(line == 'show'){
-//             showBoard();
-//         }
-//         else{
-//             let po = splitInput(line);
-//             move(po[0],po[1])
-//         }
-//     });
-    
-//     rl.on('close',()=>{
-//         process.exit();
-//     });
-    
-// }
-
-// function splitInput(input){
-//     return input.split(" ")
-// }
-
+const board = [
+    [0, 0, 0, 0, 0, 0, 0, 0], 
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0], 
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0]
+]
 
 function showBoard() {
-    board.forEach(i => {
-        console.log(showPieces(i[0]) + showPieces(i[1]) + showPieces(i[2]) + showPieces(i[3]) + showPieces(i[4]) + showPieces(i[5]) + showPieces(i[6]) + showPieces(i[7]))
-    })
+    board.forEach(singleBoardLine => {
+        console.log(singleBoardLine.reduce((prev, current) => {
+            return prev + showcurrentTargeteces(current);
+        }, ""));
+    });
 }
 
-function showPieces(piece) {
-    if (piece == 0) {
+function showcurrentTargeteces(currentTargetece) {
+    if (currentTargetece === 0) {
         return "× "
     }
-    else if (piece.pieceNumber == 1) {
-        return piece.color ? "♕ " : "♛ "
+    else if (currentTargetece.currentTargeteceNumber === 1) {
+        return currentTargetece.color ? "♕ " : "♛ "
     }
-    else if (piece.pieceNumber == 2) {
-        return piece.color ? "♖ " : "♜ "
+    else if (currentTargetece.currentTargeteceNumber === 2) {
+        return currentTargetece.color ? "♖ " : "♜ "
     }
-    else if (piece.pieceNumber == 3) {
-        return piece.color ? "♗ " : "♝ "
+    else if (currentTargetece.currentTargeteceNumber === 3) {
+        return currentTargetece.color ? "♗ " : "♝ "
     }
-    else if (piece.pieceNumber == 4) {
-        return piece.color ? "♘ " : "♞ "
+    else if (currentTargetece.currentTargeteceNumber === 4) {
+        return currentTargetece.color ? "♘ " : "♞ "
     }
-    else if (piece.pieceNumber == 5) {
-        return piece.color ? "♙ " : "♟ "
+    else if (currentTargetece.currentTargeteceNumber === 5) {
+        return currentTargetece.color ? "♙ " : "♟ "
     }
 }
 
@@ -91,34 +69,37 @@ function getPos(pos) {
         default:
     }
     return [(8 - pos[1]), x]
+    // return {
+    //     x: (8-pos[1]),
+    //     y: x
+    // }
 }
 
 function move(from, to, turn) {
-    const posFrom = getPos(from)
-    const posTo = getPos(to)
-    const pi = board[posFrom[0]][posFrom[1]]
-    if (pi == 0) {
+    const [posFrom, posTo] = [getPos(from), getPos(to)];
+
+    const currentTarget = board[posFrom[0]][posFrom[1]]
+    if (currentTarget === 0) {
         console.log("해당 위치에 말이 존재하지 않습니다")
         return
     }
-    else if(pi.color !== turn){
+    else if(currentTarget.color !== turn){
         console.log("순서대로 해!")
         return
     }
-    if (pi.moverule(to)) {
-        if (checkIfMovabale(posTo, posFrom)) {
-            board[posFrom[0]][posFrom[1]] = 0;
-            board[posTo[0]][posTo[1]] = pi;
-            pi.moving(to);
-        }
+    if (currentTarget.moverule(to)) {
+        if(!checkIfMovabale(posTo, posFrom)) return; // early return
+        board[posFrom[0]][posFrom[1]] = 0;
+        board[posTo[0]][posTo[1]] = currentTarget;
+        currentTarget.moving(to);
     }
 }
 
 function checkIfMovabale(pos, posfrom) {
-    if (board[pos[0]][pos[1]] == 0) {
+    if (board[pos[0]][pos[1]] === 0) {
         console.log("이동")
         return true
-    } else if (board[pos[0]][pos[1]].color != board[posfrom[0]][posfrom[1]].color) {
+    } else if (board[pos[0]][pos[1]].color !== board[posfrom[0]][posfrom[1]].color) {
         console.log("냠냠")
         board[pos[0]][pos[1]] = 0
         return true
@@ -127,32 +108,6 @@ function checkIfMovabale(pos, posfrom) {
         return false
     }
 }
-
-
-class User{
-    constructor(color) {
-        color = color
-    }
-}
-
-class Piece {
-    constructor(color, position, pieceNumber) {
-        this.position = position;
-        this.pieceNumber = pieceNumber;
-        //Queen:1 Rook:2 Bishop:3 Knight:4 Pawn:5
-        this.color = color;
-        //white:1 black:0
-    }
-
-    moving(to) {
-        this.position = to
-    }
-
-    moverule() {
-    }
-
-}
-
 class Queen extends Piece {
     constructor(color) {
         const position = color ? "D1" : "D8";
@@ -162,14 +117,14 @@ class Queen extends Piece {
         board[posNum[0]][posNum[1]] = this
     }
 
-    moverule(to) {
+    checkIfMovabale(to) {
         //원하는 만큼 좌우,대각선
-        super.moverule();
+        super.checkIfMovabale();
         const now = getPos(this.position);
         const go = getPos(to);
-        if (now[0] == go[0] || now[1] == go[1]) {
+        if (now[0] === go[0] || now[1] === go[1]) {
             return true;
-        } else if (now[0] - go[0] == now[1] - go[1]) {
+        } else if (now[0] - go[0] === now[1] - go[1]) {
             return true;
         } else {
             console.log("이동할 수 없는 위치입니다.")
@@ -185,9 +140,9 @@ class Rook extends Piece {
         board[posNum[0]][posNum[1]] = this
     }
 
-    moverule(to) {
+    checkIfMovabale(to) {
         //원하는 만큼 좌우로만
-        super.moverule();
+        super.checkIfMovabale();
         const now = getPos(this.position);
         const go = getPos(to);
         if (now[0] == go[0] || now[1] == go[1]) {
@@ -206,9 +161,9 @@ class Bishop extends Piece {
         board[posNum[0]][posNum[1]] = this
     }
 
-    moverule(to) {
+    checkIfMovabale(to) {
         //원하는 만큼 대각선
-        super.moverule();
+        super.checkIfMovabale();
         const now = getPos(this.position);
         const go = getPos(to);
         if (now[0] - go[0] == now[1] - go[1]) {
@@ -228,9 +183,9 @@ class Knight extends Piece {
         board[posNum[0]][posNum[1]] = this
     }
 
-    moverule(to) {
+    checkIfMovabale(to) {
         //L로 이동가능
-        super.moverule();
+        super.checkIfMovabale();
         const now = getPos(this.position);
         const go = getPos(to);
         if ((now[0] - go[0]) * (now[1] - go[1]) == 2 || (now[0] - go[0]) * (now[1] - go[1]) == -2) {
@@ -240,7 +195,6 @@ class Knight extends Piece {
             return false;
         }
     }
-
 }
 
 class Pawn extends Piece {
