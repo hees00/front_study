@@ -1,37 +1,5 @@
 const board = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
-const readline = require("readline");
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
-
-
-// function playing() {
-//     startGame();
-
-//     rl.on("line",(line)=>{
-//         if(line == 'end'){
-//             rl.close();
-//         }
-//         else if(line == 'show'){
-//             showBoard();
-//         }
-//         else{
-//             let po = splitInput(line);
-//             move(po[0],po[1])
-//         }
-//     });
-    
-//     rl.on('close',()=>{
-//         process.exit();
-//     });
-    
-// }
-
-// function splitInput(input){
-//     return input.split(" ")
-// }
-
+let turn =1 ;
 
 function showBoard() {
     board.forEach(i => {
@@ -93,7 +61,7 @@ function getPos(pos) {
     return [(8 - pos[1]), x]
 }
 
-function move(from, to, turn) {
+function move(from, to) {
     const posFrom = getPos(from)
     const posTo = getPos(to)
     const pi = board[posFrom[0]][posFrom[1]]
@@ -105,11 +73,13 @@ function move(from, to, turn) {
         console.log("순서대로 해!")
         return
     }
+
     if (pi.moverule(to)) {
         if (checkIfMovabale(posTo, posFrom)) {
             board[posFrom[0]][posFrom[1]] = 0;
             board[posTo[0]][posTo[1]] = pi;
             pi.moving(to);
+            turn = turn ? 0:1;
         }
     }
 }

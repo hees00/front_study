@@ -8,7 +8,6 @@ const rl = readline.createInterface({
 
 
 chess.startGame();
-let color = 1
 
 rl.on("line",(line)=>{
     if(line == 'end'){
@@ -19,8 +18,7 @@ rl.on("line",(line)=>{
     }
     else{
         let po = splitInput(line);
-        chess.move(po[0],po[1],color);
-        color = color? 0:1;
+        chess.move(po[0],po[1])
     }
 });
     
@@ -31,3 +29,4 @@ rl.on('close',()=>{
 function splitInput(ip){
     return ip.split(" ")
 }
+
