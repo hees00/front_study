@@ -1,6 +1,16 @@
 const Piece = require('./Piece.js');
 
-const board = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+const board = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0]
+]
+
 let turn = 1;
 
 function showBoard() {
@@ -9,9 +19,6 @@ function showBoard() {
     })
 }
 
-// function setBoard(x,y,piece){
-//     board[y][x] = piece;
-// }
 
 function showPieces(piece) {
     if (piece == 0) {
@@ -66,10 +73,9 @@ function checkIfMovabale(pos, posfrom) {
         console.log("냠냠")
         board[pos.y][pos.x] = 0
         return true
-    } else {
-        console.log("이미 본인 말이 위치해있습니다")
-        return false
-    }
+    } 
+    console.log("이미 본인 말이 위치해있습니다")
+    return false
 }
 
 function getPos(pos) {
@@ -112,7 +118,6 @@ function getPos(pos) {
 exports.showBoard = showBoard;
 exports.move = move;
 exports.board = board;
-// exports.setBoard = setBoard;
 
 
 

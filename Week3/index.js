@@ -32,9 +32,10 @@ rl.on('close',()=>{
     process.exit();
 });
 
-function splitInput(ip){
+function splitInput(ip) {
     return ip.split(" ")
 }
+
 
 function startGame() {
     wq = new Queen(1);
